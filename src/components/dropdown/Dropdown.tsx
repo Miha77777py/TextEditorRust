@@ -6,25 +6,36 @@ import { invoke } from "@tauri-apps/api";
 
 interface Props {
     textareaValue: string;
+    theme: string;
     handleTextChange: (text: string) => void;
     handleTextSizeChange: (size: number) => void;
+    handleThemeChange: (theme: string) => void;
 }
 
-const Dropdown = ({ textareaValue, handleTextChange, handleTextSizeChange }: Props) => {
+const Dropdown = ({ textareaValue, theme, handleTextChange, handleTextSizeChange, handleThemeChange }: Props) => {
     const [currentFileDropdownOption, setFileDropdownOption] = 
         useState("close");
     const [currentAppereanceDropdownOption, setAppereanceDropdownOption] =
         useState("close");
     const [currentTextSizeDropdownOption, setTextSizeDropdownOption] =
         useState("close");
+    const [currentThemeDropdownOption, setThemeDropdownOption] =
+        useState("close");
 
     const optionCloseStyle = {
         display: "none",
+        border: `1px solid ${theme === "dark" ? "white" : "rgb(40, 44, 52)"}`,
     };
 
     const optionOpenStyle = {
         display: "block",
+        border: `1px solid ${theme === "dark" ? "white" : "rgb(40, 44, 52)"}`,
     };
+
+    const dropdownColorStyle = {
+        color: theme === "dark" ? "rgb(40, 44, 52)" : "white",
+        borderBottom: `1px solid ${theme === "dark" ? "white" : "rgb(40, 44, 52)"}`,
+    }
 
     const handleSave = async () => {
         let path = await save({
@@ -58,9 +69,10 @@ const Dropdown = ({ textareaValue, handleTextChange, handleTextSizeChange }: Pro
     };
 
     return (
-        <div className="dropdown">
+        <div className="dropdown" style={dropdownColorStyle}>
             <div className="dropdown__submenu">
                 <Button
+                    theme={theme}
                     className="dropdown_main"
                     dropdownOption={currentFileDropdownOption}
                     onClick={() => {
@@ -82,6 +94,7 @@ const Dropdown = ({ textareaValue, handleTextChange, handleTextSizeChange }: Pro
                     <ul className="dropdown__list">
                         <li className="dropdown__item">
                             <Button
+                                theme={theme}
                                 className="dropdown_options"
                                 onClick={handleSave}
                             >
@@ -90,6 +103,7 @@ const Dropdown = ({ textareaValue, handleTextChange, handleTextSizeChange }: Pro
                         </li>
                         <li className="dropdown__item">
                             <Button
+                                theme={theme}
                                 className="dropdown_options"
                                 onClick={handleRead}
                             >
@@ -98,6 +112,7 @@ const Dropdown = ({ textareaValue, handleTextChange, handleTextSizeChange }: Pro
                         </li>
                         <li className="dropdown__item">
                             <Button
+                                theme={theme}
                                 className="dropdown_options"
                                 onClick={handleClear}
                             >
@@ -109,12 +124,15 @@ const Dropdown = ({ textareaValue, handleTextChange, handleTextSizeChange }: Pro
             </div>
             <div className="dropdown__submenu">
                 <Button
+                    theme={theme}
                     className="dropdown_main"
                     dropdownOption={currentAppereanceDropdownOption}
                     onClick={() => {
                         currentAppereanceDropdownOption === "close"
                             ? setAppereanceDropdownOption("open")
                             : setAppereanceDropdownOption("close");
+                        setThemeDropdownOption("close");
+                        setTextSizeDropdownOption("close");
                     }}
                 >
                     Appereance
@@ -131,12 +149,14 @@ const Dropdown = ({ textareaValue, handleTextChange, handleTextSizeChange }: Pro
                         <li className="dropdown__item">
                             <div className="dropdown__submenu">
                                 <Button
+                                    theme={theme}
                                     className="dropdown_main"
                                     dropdownOption={currentTextSizeDropdownOption}
                                     onClick={() => {
                                         currentTextSizeDropdownOption === "close"
                                             ? setTextSizeDropdownOption("open")
                                             : setTextSizeDropdownOption("close");
+                                        setThemeDropdownOption("close");
                                     }}
                                 >
                                     Text Size
@@ -152,6 +172,7 @@ const Dropdown = ({ textareaValue, handleTextChange, handleTextSizeChange }: Pro
                                     <ul className="dropdown__list">
                                         <li className="dropdown__item">
                                             <Button
+                                                theme={theme}
                                                 className="dropdown_options"
                                                 onClick={() => handleTextSizeChange(75)}
                                             >
@@ -160,6 +181,7 @@ const Dropdown = ({ textareaValue, handleTextChange, handleTextSizeChange }: Pro
                                         </li>
                                         <li className="dropdown__item">
                                             <Button
+                                                theme={theme}
                                                 className="dropdown_options"
                                                 onClick={() => handleTextSizeChange(100)}
                                             >
@@ -168,6 +190,7 @@ const Dropdown = ({ textareaValue, handleTextChange, handleTextSizeChange }: Pro
                                         </li>
                                         <li className="dropdown__item">
                                             <Button
+                                                theme={theme}
                                                 className="dropdown_options"
                                                 onClick={() => handleTextSizeChange(150)}
                                             >
@@ -176,10 +199,57 @@ const Dropdown = ({ textareaValue, handleTextChange, handleTextSizeChange }: Pro
                                         </li>
                                         <li className="dropdown__item">
                                             <Button
+                                                theme={theme}
                                                 className="dropdown_options"
                                                 onClick={() => handleTextSizeChange(200)}
                                             >
                                                 200%
+                                            </Button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                        <li className="dropdown__item">
+                            <div className="dropdown__submenu">
+                                <Button
+                                    theme={theme}
+                                    className="dropdown_main"
+                                    dropdownOption={currentThemeDropdownOption}
+                                    onClick={() => {
+                                        currentThemeDropdownOption === "close"
+                                            ? setThemeDropdownOption("open")
+                                            : setThemeDropdownOption("close");
+                                        setTextSizeDropdownOption("close");
+                                    }}
+                                >
+                                    Theme
+                                </Button>
+                                <div
+                                    className="dropdown__content"
+                                    style={
+                                        currentThemeDropdownOption === "close"
+                                            ? optionCloseStyle
+                                            : optionOpenStyle
+                                    }
+                                >
+                                    <ul className="dropdown__list">
+                                        <li className="dropdown__item">
+                                            <Button
+                                                theme={theme}
+                                                className="dropdown_options"
+                                                onClick={() => handleThemeChange("light")}
+                                            >
+                                                Light
+                                            </Button>
+                                        </li>
+                                        <li className="dropdown__item">
+                                            <Button
+                                                theme={theme}
+                                                className="dropdown_options"
+                                                onClick={() => handleThemeChange("dark")}
+                                            >
+                                                Dark
                                             </Button>
                                         </li>
                                     </ul>

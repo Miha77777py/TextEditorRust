@@ -23,7 +23,9 @@
         "width": 800,
         "height": 600,
         "theme": "Light",
-        "resizable": false
+        "resizable": true,
+        "minWidth": 300,
+        "minHeight": 200
       }
     ],
     "security": {

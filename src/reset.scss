@@ -1,3 +1,12 @@
+html, body, #root {
+    height: 100%;
+}
+
+#root {
+    display: flex;
+    flex-direction: column;
+}
+
 h1, h2, h3, h4, h5, h6, p, button {
     margin: 0;
     padding: 0;

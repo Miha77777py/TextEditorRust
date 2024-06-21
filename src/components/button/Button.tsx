@@ -8,11 +8,12 @@ interface Props {
   onClick?: () => void;
   dropdownOption?: string;
   className: "dropdown_main" | "dropdown_options";
+  theme: string;
 }
 
-const Button = ({ children, onClick, className, dropdownOption }: Props) => {
+const Button = ({ children, onClick, className, dropdownOption, theme }: Props) => {
   return (
-    <button onClick={onClick} className={className}>
+    <button onClick={onClick} className={className + " " + theme}>
       {children}
       {className === "dropdown_main" 
         ? dropdownOption === "close" 
